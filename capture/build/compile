@@ -1,0 +1,46 @@
+#!/bin/csh -f
+alias chkst 'if ($status != 0) then \
+  echo "Failure!"; \
+  exit(1); \
+endif'
+
+@ debug = 0
+@ clean = 1
+if ($#argv == 1) then
+  if ($argv[1] == "debug") then
+    @ debug = 1
+  endif
+  if ($argv[1] == "noclean") then
+    @ clean = 0
+  endif
+endif
+
+
+## Hack for compiling on Jetson TX1 with new opencv (after JetPack 3.0)
+set archi=`uname -i`
+if ( x"$archi" == x"aarch64" ) then
+  set extraopts = ( -DCUDA_USE_STATIC_CUDA_RUNTIME=OFF )
+else
+  set extraopts = ( )
+endif
+
+#goto MAKE
+if ($clean) then
+  sudo ./clean
+endif
+if ($debug) then
+  set cmd = ( cmake -DCMAKE_BUILD_TYPE=Debug "$extraopts" ../ )
+  set strip = ( --strip=no )
+else
+  set cmd = ( cmake -DCMAKE_BUILD_TYPE=Release "$extraopts" ../ )
+  set strip = ( --strip=yes )
+endif
+
+echo $cmd
+$cmd
+chkst
+
+MAKE:
+make -j6 #VERBOSE=1
+chkst
+

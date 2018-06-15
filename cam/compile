@@ -1,0 +1,4 @@
+#!/bin/csh -f
+
+##setenv LD_LIBRARY_PATH /usr/local/cuda/nvvm/lib:/usr/local/cuda/lib64:/usr/local/opencv3/lib
+g++ -I/usr/local/opencv3/include cam.cpp -L/usr/local/opencv3/lib -lopencv_core -lopencv_videoio -lopencv_highgui -o cam

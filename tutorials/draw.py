@@ -21,6 +21,9 @@ while (1):
     cv.rectangle(img, (0, 0), (510-384, 128), (0, 255, 0), 3)
     cv.rectangle(img, (0, 510-128), (510-384, 510), (0, 255, 0), 3)
     cv.circle(img, (255,255), r, (0, 0, 255), 2)
+    
+    font = cv.FONT_HERSHEY_SIMPLEX
+    cv.putText(img, 'Expanse', (10, 500), font, 4, (255, 255, 255), 2, cv.LINE_AA)
 
     cv.imshow('frames', img)
     k = cv.waitKey(10) & 0xFF

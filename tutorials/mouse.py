@@ -5,19 +5,26 @@ db = 76
 dg = 142
 dr = 0
 
+def get_random(a, b):
+    temp = np.random.random_sample() * (b - a) + a
+#    print("a = {}, b = {}, random number = {}".format(a, b, temp))
+    return temp
+
 # mouse callback function
 def draw_circle(event, x, y, flags, param):
     global db, dg, dr
-#    if event == cv.EVENT_LBUTTONUP:
-    cb = np.random.randint(0, 10)
-    cg = np.random.randint(0, 10)
-    cr = np.random.randint(0, 10)
-    db = (db + cb)%360   
-    dg = (dg + 1)%360   
-    dr = (dr + 1)%360   
+    cb = get_random(0, 2)
+    cg = get_random(3, 7)
+    cr = get_random(1, 4)
+    db = (db + cb)
+    dg = (dg - cg)
+    dr = (dr + cr)
     b = np.abs(np.sin(db * np.pi/180)*256)
-    g = np.abs(np.sin(-1 * dg * np.pi/180)*256)
+    g = np.abs(np.sin(dg * np.pi/180)*256)
     r = np.abs(np.sin(dr * np.pi/180)*256)
+#    b = int(get_random(0, 256))
+#    g = int(get_random(0, 256))
+#    r = int(get_random(0, 256))
     cv.circle(img, (x,y), 100, (b, g, r), 2)
 
 # create a black image, a window and bind the function to window
@@ -27,6 +34,6 @@ cv.setMouseCallback('image', draw_circle)
 
 while (1):
     cv.imshow('image', img)
-    if cv.waitKey(1) & 0xFF == ord('q'):
+    if cv.waitKey(2) & 0xFF == ord('q'):
         break
 cv.destroyAllWindows()
